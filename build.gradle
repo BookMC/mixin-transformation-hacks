@@ -1,0 +1,27 @@
+plugins {
+    id "java"
+}
+
+group "org.bookmc"
+version "1.0.0"
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://jitpack.io/"
+    }
+}
+
+dependencies {
+    implementation group: 'org.ow2.asm', name: 'asm', version: '9.1'
+    implementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
+
+    compileOnly "com.github.BookMC:LegacyLauncher:2cbe27165a"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
+}
+
+test {
+    useJUnitPlatform()
+}
