@@ -13,6 +13,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'net.bytebuddy:byte-buddy-agent:+'
+
     implementation group: 'org.ow2.asm', name: 'asm', version: '9.1'
     implementation group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
 

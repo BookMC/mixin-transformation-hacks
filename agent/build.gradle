@@ -1,0 +1,15 @@
+plugins {
+    id "java"
+}
+
+group "org.bookmc"
+version "1.0.0"
+
+jar {
+    manifest {
+        attributes("Agent-Class": "org.bookmc.agent.Agent")
+        attributes("Can-Retransform-Classes": "true")
+    }
+
+    archiveVersion.set("")
+}
