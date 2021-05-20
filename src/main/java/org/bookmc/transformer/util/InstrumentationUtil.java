@@ -1,6 +1,7 @@
 package org.bookmc.transformer.util;
 
 import net.bytebuddy.agent.ByteBuddyAgent;
+import net.minecraft.launchwrapper.Launch;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
@@ -73,7 +74,7 @@ public class InstrumentationUtil {
             }
             ByteBuddyAgent.attach(jar, name.substring(0, name.indexOf('@')));
 
-            final Field field = Class.forName("org.bookmc.agent.Agent", false, Launcher.getLauncher().getClassLoader()).getDeclaredField("instrumentation");
+            final Field field = Class.forName("org.bookmc.agent.Agent", false, Launch.class.getClassLoader()).getDeclaredField("instrumentation");
 
             field.setAccessible(true);
 
