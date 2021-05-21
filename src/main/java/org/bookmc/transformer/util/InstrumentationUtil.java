@@ -5,10 +5,10 @@ import net.minecraft.launchwrapper.Launch;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
-import sun.misc.Launcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
@@ -19,11 +19,13 @@ import java.util.function.Consumer;
 
 /**
  * Taken from https://github.com/Devan-Kerman/GrossFabricHacks/blob/master/src/main/java/net/devtech/grossfabrichacks/instrumentation/InstrumentationApi.java
- *
+ * <p>
  * Licensed as MPL-2.0
  */
 
 public class InstrumentationUtil {
+    private static final boolean export = true;
+
     private static final Instrumentation instrumentation;
 
     /**
@@ -41,7 +43,23 @@ public class InstrumentationUtil {
                     transformer.accept(node);
                     ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
                     node.accept(writer);
-                    return writer.toByteArray();
+
+                    byte[] clazz = writer.toByteArray();
+
+                    if (export) {
+                        File file = new File("output/" + className.replace(".", "/") + ".class");
+                        file.getParentFile().mkdirs();
+
+                        try (FileOutputStream fos = new FileOutputStream(file)) {
+                            file.delete();
+                            file.createNewFile();
+                            fos.write(clazz, 0, clazz.length);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    return clazz;
                 }
 
                 return classfileBuffer;

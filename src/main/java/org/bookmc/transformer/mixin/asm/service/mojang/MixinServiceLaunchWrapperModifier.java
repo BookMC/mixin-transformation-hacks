@@ -2,10 +2,7 @@ package org.bookmc.transformer.mixin.asm.service.mojang;
 
 import org.bookmc.transformer.util.InstrumentationUtil;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.*;
 
 import java.util.Iterator;
 
@@ -23,6 +20,17 @@ public class MixinServiceLaunchWrapperModifier {
 
                             if (insnNode instanceof TypeInsnNode && insnNode.getOpcode() == Opcodes.CHECKCAST && ((TypeInsnNode) insnNode).desc.equals("java/net/URLClassLoader")) {
                                 list.remove(insnNode);
+                            }
+
+                            if (insnNode instanceof MethodInsnNode && insnNode.getOpcode() == Opcodes.INVOKEVIRTUAL && ((MethodInsnNode) insnNode).owner.equals("java/net/URLClassLoader")) {
+                                ((MethodInsnNode) insnNode).owner = "java/lang/ClassLoader";
+                                break;
+                            }
+                        }
+
+                        for (LocalVariableNode variable : methodNode.localVariables) {
+                            if (variable.desc.equals("Ljava/net/URLClassLoader;")) {
+                                variable.desc = "Ljava/lang/ClassLoader;";
                                 break;
                             }
                         }
