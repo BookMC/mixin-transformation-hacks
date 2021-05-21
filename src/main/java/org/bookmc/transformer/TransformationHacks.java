@@ -5,11 +5,7 @@ import org.bookmc.transformer.mixin.asm.service.mojang.MixinServiceLaunchWrapper
 
 public class TransformationHacks {
     public static void hack() {
-        try {
-            ClassReaderModifier.run();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        ClassReaderModifier.run();
         MixinServiceLaunchWrapperModifier.run();
     }
 }
